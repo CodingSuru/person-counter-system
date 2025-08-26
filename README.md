@@ -5,9 +5,9 @@ Welcome to the Person Counter System! 🎉 This Flask-based web application uses
 Real-Time Detection: Uses YOLOv11 to identify and count people in video streams with high accuracy. 🔍
 Multiple Sources: Supports local MP4 files 📁, RTSP camera streams 📹, and Android phone cameras 📱.
 Video Upload: Upload your own MP4 video or use a pre-uploaded sample video for person counting. 🎥
-Interactive Web Interface: Displays live video feeds with bounding boxes, current/maximum counts, and recent activity logs. 📊
+Interactive Web Interface: Displays live video feeds with bounding boxes, current/maximum counts, source type, and recent activity logs. 📊
 Secure Camera Access: Login interface for entering RTSP or Android camera URLs securely. 🔒
-Data Management: Stores up to 200 detection records in data.json, overwriting older entries to keep things tidy. 📝
+Data Management: Stores up to 200 detection records in data.json, including timestamp, person count, change type, max count, and source type, overwriting older entries to keep things tidy. 📝
 Responsive Design: Built with Tailwind CSS for a modern, mobile-friendly interface. 📱💻
 
 📋 Prerequisites
@@ -78,10 +78,10 @@ Text overlays show the current person count (green), maximum count (red), and so
 Monitor Data 📊
 
 The interface shows:
-Current Count: Number of people currently detected.
-Maximum Count: Highest number of people detected in the session.
-Total Records: Number of logged detection events (up to 200).
-Recent Activity: A table of the last 5 detection events, including timestamp, person count, change type, and max count.
+Current: Number of people currently detected.
+Max: Highest number of people detected in the session.
+Source: Type of video source (FILE, RTSP, or ANDROID).
+Recent Activity: A table of the last 5 detection events, including timestamp, person count, change type, max count, and source.
 
 
 
@@ -145,6 +145,30 @@ person-counter-system/
 ├── requirements.txt            # Python dependencies
 └── README.md                   # Project documentation
 
+📊 Data Storage
+The data.json file in the backend/ directory stores detection records with the following structure:
+[
+  {
+    "timestamp": "2025-08-26 11:42:00",
+    "person_count": 9,
+    "change_type": "increase",
+    "max_count": 9,
+    "source": "file"
+  },
+  ...
+]
+
+
+Fields:
+timestamp: When the detection occurred.
+person_count: Number of people detected in the frame.
+change_type: Whether the count increased or decreased.
+max_count: Highest number of people detected in the session.
+source: Video source type (file, rtsp, or android).
+
+
+Limit: Only the most recent 200 records are kept.
+
 🛡️ Notes
 
 YOLO Model: The yolo11n.pt file is large and excluded from the repository. Download it from Ultralytics and place it in the root directory.
@@ -159,6 +183,11 @@ Performance: YOLO processing is CPU/GPU-intensive. Test thoroughly on your deplo
 Video Feed Not Loading:
 Check if the video file or camera URL is correct and accessible from the server.
 Ensure the server and camera are on the same network (for local testing) or use public IPs (for deployment).
+
+
+Counts Not Updating:
+Verify that data.json is being written to (backend/ directory permissions).
+Ensure the /get_data endpoint is accessible and returns valid JSON.
 
 
 Upload Errors:
