@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+
+# YOLO model and large files
+yolo11n.pt
+sample/sample.mp4
+
+# Uploaded videos
+uploads/
+
+# Backend data
+backend/data.json
+
+# IDE and editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Miscellaneous
+*.log
+*.tmp
